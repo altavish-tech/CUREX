@@ -7,25 +7,32 @@
 1. **Create New Vercel Project**
    - Go to https://vercel.com/new
    - Import your GitHub repository
-   - Select **Root Directory**: `apps/web`
+   - **IMPORTANT**: Configure Root Directory BEFORE importing:
+     - Click "Configure Project"
+     - Set **Root Directory**: `apps/web`
+     - Vercel will auto-detect it as a Vite project
 
-2. **Configure Build Settings**
+2. **Verify Build Settings** (Auto-detected by Vercel)
    ```
    Framework Preset: Vite
-   Root Directory: apps/web
    Build Command: npm run build
    Output Directory: dist
    Install Command: npm install
+   Root Directory: apps/web (MOST IMPORTANT!)
    ```
    
-   **IMPORTANT**: Make sure to set the Root Directory to `apps/web` before importing!
+   **CRITICAL**: If you don't set Root Directory to `apps/web`, the build will fail!
 
-3. **Environment Variables**
+3. **Environment Variables** (Optional for now)
    ```
    VITE_API_URL=https://your-api-project.vercel.app
    ```
+   You can add this later after deploying the backend.
 
 4. **Deploy** ✅
+   - Click "Deploy" button
+   - Wait 2-3 minutes for build to complete
+   - Your frontend will be live!
 
 ---
 
@@ -99,6 +106,19 @@ Not recommended for this project structure as API and Frontend should be deploye
 ---
 
 ## Troubleshooting
+
+### "No deployable output" or "404 Not Found"
+**Solution**: 
+1. Go to Project Settings → General
+2. Check **Root Directory** is set to `apps/web` (for frontend) or `apps/api` (for backend)
+3. If not set, add it and redeploy
+4. Vercel MUST know which folder to build from in a monorepo
+
+### Build Fails with "builds configuration"
+**Solution**: 
+- Remove any custom `builds` field from vercel.json
+- Let Vercel auto-detect the framework
+- Only use `rewrites` for SPA routing
 
 ### Build Fails
 - Check that Root Directory is set correctly
