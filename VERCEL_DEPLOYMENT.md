@@ -12,10 +12,13 @@
 2. **Configure Build Settings**
    ```
    Framework Preset: Vite
+   Root Directory: apps/web
    Build Command: npm run build
    Output Directory: dist
    Install Command: npm install
    ```
+   
+   **IMPORTANT**: Make sure to set the Root Directory to `apps/web` before importing!
 
 3. **Environment Variables**
    ```
@@ -35,10 +38,15 @@
 2. **Configure Build Settings**
    ```
    Framework Preset: Other
+   Root Directory: apps/api
    Build Command: npm run vercel-build
    Output Directory: (leave empty)
    Install Command: npm install
    ```
+   
+   **IMPORTANT**: 
+   - Set Root Directory to `apps/api` before importing
+   - Leave Output Directory empty for Node.js projects
 
 3. **Environment Variables**
    ```
