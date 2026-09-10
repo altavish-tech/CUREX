@@ -1,5 +1,18 @@
 # Vercel Deployment Guide for CUREX
 
+## ⚠️ CRITICAL FIRST STEP
+
+**In a monorepo, you MUST set Root Directory in Vercel Project Settings!**
+
+Without this, Vercel doesn't know which folder to build and will show:
+- "No deployable output" error
+- 404 NOT_FOUND
+- Build completes in 6ms (nothing was built)
+
+👉 **See [VERCEL_FIX_STEPS.md](./VERCEL_FIX_STEPS.md) for detailed troubleshooting**
+
+---
+
 ## Option 1: Deploy Frontend and Backend Separately (RECOMMENDED)
 
 ### 🎨 Frontend Deployment (apps/web)
@@ -7,32 +20,27 @@
 1. **Create New Vercel Project**
    - Go to https://vercel.com/new
    - Import your GitHub repository
-   - **IMPORTANT**: Configure Root Directory BEFORE importing:
-     - Click "Configure Project"
-     - Set **Root Directory**: `apps/web`
-     - Vercel will auto-detect it as a Vite project
+   
+2. **⚠️ CRITICAL: Set Root Directory**
+   - **BEFORE clicking Deploy**, look for "Root Directory"
+   - Click "Edit" next to Root Directory
+   - Type: `apps/web`
+   - Click "Save"
+   - Vercel will auto-detect: "Vite Detected ✓"
 
-2. **Verify Build Settings** (Auto-detected by Vercel)
+3. **Verify Auto-detected Settings**
    ```
-   Framework Preset: Vite
+   Framework Preset: Vite ✓
+   Root Directory: apps/web ⚠️ MUST BE SET!
    Build Command: npm run build
    Output Directory: dist
    Install Command: npm install
-   Root Directory: apps/web (MOST IMPORTANT!)
    ```
-   
-   **CRITICAL**: If you don't set Root Directory to `apps/web`, the build will fail!
-
-3. **Environment Variables** (Optional for now)
-   ```
-   VITE_API_URL=https://your-api-project.vercel.app
-   ```
-   You can add this later after deploying the backend.
 
 4. **Deploy** ✅
    - Click "Deploy" button
-   - Wait 2-3 minutes for build to complete
-   - Your frontend will be live!
+   - Build should take 30-60 seconds (not 6ms!)
+   - Wait for completion
 
 ---
 
