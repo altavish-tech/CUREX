@@ -25,7 +25,13 @@
     "docker:down": "docker-compose down"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "@vercel/node": "^3.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0"
   },
   "engines": {
     "node": ">=20.0.0",
