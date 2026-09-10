@@ -22,13 +22,13 @@ export interface JWTPayload {
 export function generateAccessToken(payload: JWTPayload): string {
   return jwt.sign(payload, config.JWT_SECRET, {
     expiresIn: config.JWT_EXPIRES_IN,
-  } as jwt.SignOptions);
+  } as any);
 }
 
 export function generateRefreshToken(payload: JWTPayload): string {
   return jwt.sign(payload, config.REFRESH_TOKEN_SECRET, {
     expiresIn: config.REFRESH_TOKEN_EXPIRES_IN,
-  } as jwt.SignOptions);
+  } as any);
 }
 
 export function verifyAccessToken(token: string): JWTPayload {
