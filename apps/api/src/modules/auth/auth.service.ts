@@ -6,7 +6,7 @@ import {
   generateRefreshToken,
   JWTPayload,
 } from '../../utils/auth';
-import { AuthenticationError, ConflictError, ValidationError } from '../../utils/errors';
+import { AuthenticationError, ConflictError } from '../../utils/errors';
 import { logger } from '../../utils/logger';
 
 export interface LoginInput {
@@ -23,6 +23,11 @@ export interface RegisterInput {
   phone?: string;
   dateOfBirth?: Date;
   gender?: 'MALE' | 'FEMALE' | 'OTHER' | 'PREFER_NOT_TO_SAY';
+  hospitalId?: string; // Required for DOCTOR, NURSE, ADMIN
+  qualification?: string; // For DOCTOR
+  specialization?: string; // For DOCTOR
+  licenseNumber?: string; // For DOCTOR, NURSE
+  designation?: string; // For NURSE
 }
 
 export interface AuthResponse {
@@ -122,48 +127,56 @@ export class AuthService {
     const hashedPassword = await hashPassword(input.password);
 
     // Create user with profile based on role
+    const userData: any = {
+      email: input.email,
+      password: hashedPassword,
+      role: input.role,
+    };
+
+    if (input.role === 'PATIENT') {
+      userData.patient = {
+        create: {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          phone: input.phone || '',
+          dateOfBirth: input.dateOfBirth || new Date('2000-01-01'),
+          gender: input.gender || 'PREFER_NOT_TO_SAY',
+        },
+      };
+    } else if (input.role === 'DOCTOR' && input.hospitalId) {
+      userData.doctor = {
+        create: {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          qualification: input.qualification || 'MD',
+          specialization: input.specialization || 'General Medicine',
+          licenseNumber: input.licenseNumber || `DOC-${Date.now()}`,
+          hospitalId: input.hospitalId,
+        },
+      };
+    } else if (input.role === 'NURSE' && input.hospitalId) {
+      userData.nurse = {
+        create: {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          designation: input.designation || 'Staff Nurse',
+          licenseNumber: input.licenseNumber || `NUR-${Date.now()}`,
+          hospitalId: input.hospitalId,
+        },
+      };
+    } else if (input.role === 'ADMIN' && input.hospitalId) {
+      userData.admin = {
+        create: {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          role: 'ADMIN',
+          hospitalId: input.hospitalId,
+        },
+      };
+    }
+
     const user = await prisma.user.create({
-      data: {
-        email: input.email,
-        password: hashedPassword,
-        role: input.role,
-        ...(input.role === 'PATIENT' && {
-          patient: {
-            create: {
-              firstName: input.firstName,
-              lastName: input.lastName,
-              phone: input.phone || '',
-              dateOfBirth: input.dateOfBirth || new Date('2000-01-01'),
-              gender: input.gender || 'PREFER_NOT_TO_SAY',
-            },
-          },
-        }),
-        ...(input.role === 'DOCTOR' && {
-          doctor: {
-            create: {
-              firstName: input.firstName,
-              lastName: input.lastName,
-              qualification: 'MD',
-            },
-          },
-        }),
-        ...(input.role === 'NURSE' && {
-          nurse: {
-            create: {
-              firstName: input.firstName,
-              lastName: input.lastName,
-            },
-          },
-        }),
-        ...(input.role === 'ADMIN' && {
-          admin: {
-            create: {
-              firstName: input.firstName,
-              lastName: input.lastName,
-            },
-          },
-        }),
-      },
+      data: userData,
       include: {
         patient: true,
         doctor: true,

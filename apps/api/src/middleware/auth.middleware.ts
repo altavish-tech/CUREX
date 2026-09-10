@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export function authenticateJWT(req: Request, res: Response, next: NextFunction): void {
+export function authenticateJWT(req: Request, _res: Response, next: NextFunction): void {
   try {
     const authHeader = req.headers.authorization;
 
@@ -30,7 +30,7 @@ export function authenticateJWT(req: Request, res: Response, next: NextFunction)
 }
 
 export function requireRole(...allowedRoles: string[]) {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (req: Request, _res: Response, next: NextFunction): void => {
     try {
       if (!req.user) {
         throw new AuthenticationError();

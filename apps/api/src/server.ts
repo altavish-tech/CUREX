@@ -27,7 +27,7 @@ app.use(morgan('combined', {
 }));
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', (_req, res) => {
   res.json({
     success: true,
     data: {
@@ -56,7 +56,7 @@ const demoEncounters: any[] = [
 ];
 
 // Encounters API
-app.get('/api/encounters', (req, res) => {
+app.get('/api/encounters', (_req, res) => {
   res.json({
     success: true,
     data: demoEncounters,
@@ -85,7 +85,7 @@ app.post('/api/encounters', (req, res) => {
 });
 
 // API Root
-app.get('/api', (req, res) => {
+app.get('/api', (_req, res) => {
   res.json({
     success: true,
     message: 'CUREX API Server',
