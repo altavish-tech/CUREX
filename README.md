@@ -700,3 +700,20 @@ Let's build something amazing together. 💙
 
 *Last Updated: September 5, 2026*  
 *Version: 1.0.0 (Analysis Phase)*
+
+
+## 🌐 Deployment
+
+### Vercel Deployment
+
+See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for detailed deployment instructions.
+
+**Quick Summary:**
+- Deploy Frontend (apps/web) and Backend (apps/api) as separate Vercel projects
+- Set Root Directory for each project
+- Configure environment variables
+- Both projects auto-deploy from GitHub
+
+**Deployment Links:**
+- 📖 Detailed Guide: [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md)
+- 🔧 Configuration: `apps/web/vercel.json` and `apps/api/vercel.json`
